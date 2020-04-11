@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specificed\" && exit 1",
-    "start": "node app.js"
+    "start": "node app.js",
+    "heroku-prebuild": "npm install --only clarifai"
   },
   "author": "Revitacycle",
   "licence": "ISC"
