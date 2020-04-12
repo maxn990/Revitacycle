@@ -15,7 +15,7 @@ app.config['SECRET_KEY'] = 'fjhasldkfjhasdflkhasdflkjh'
 mlApp = ClarifaiApp(api_key='86481bac6d0847dba50601141a7dba8d')
 model = mlApp.public_models.general_model
 
-recyclable_objects = ["bottle", "metal bottle", "cardboard", "glass", "plastic bottle", "plastic container", "cereal box",
+recyclable_objects = ["bottle", "cardboard", "glass", "plastic bottle", "plastic container", "cereal box",
                      "snack box", "phonebook", "magazine", "mail", "paper", "newspaper", "tin cans",
                       "aluminum can", "steel can", "food container", "jar", "soft drink bottle", "beer bottle",
                        "wine bottle", "liquor bottle", "carton", "aersol", "aersol can", "aluminum", "aluminum foil",
@@ -25,6 +25,13 @@ recyclable_objects = ["bottle", "metal bottle", "cardboard", "glass", "plastic b
                          "plastic food container", "plastic cup", "metal can", "aluminum can", "wrapping paper",
                          "mail", "newspaper", "book"]
 
+tech_objects = ["computer", "phone", "watch", "laptop", "desktop", "tablet", 'iPad', 'iPhone', 'apple watch',
+                'pc', 'personal computer', 'mac', 'ram', 'ram card', 'processor', 'mother board', 'screen',
+                'display', 'monitor', 'calculator', 'speaker', 'kindle', 'periferal', 'key board', 'mouse', 'mice']
+
+not_recycleable = ['paper plate', 'paper towel', 'paper napkin', 'plate', 'towel', 'napkin', 'metal bottle', 'plastic rap', 'food',
+                    'ceramics', 'packing peanut', 'light bulb', 'photo', 'photograph', 'wood', 'egg carton', 'metal water bottle']
+
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in allowed_extentions
@@ -32,6 +39,20 @@ def allowed_file(filename):
 def is_recyclable(detected_objects):
     for o in detected_objects:
         for r in recyclable_objects:
+            if r in o:
+                return True
+    return False
+
+def tech_is_recyclable(detected_objects):
+    for o in detected_objects:
+        for r in tech_objects:
+            if r in o:
+                return True
+    return False
+
+def is_not_recyclable(detected_objects):
+    for o in detected_objects:
+        for r in not_recycleable:
             if r in o:
                 return True
     return False
@@ -63,11 +84,21 @@ def index():
                         correct_results.append(name)
                 percent_sure = "We are " + str(response["outputs"][0]["data"]["concepts"][0]["value"]*100) + "% sure that your object is recyclable!"
                 os.remove(position)
-                if is_recyclable(correct_results):
+                if is_not_recyclable(correct_results):
+                    recyclable = "Contrary to popular belief, your object is not recyclable."
+                    flash("Success! Press \"See results\" to see our analysis of your item.")
+                    return render_template("index.html", recyclable=recyclable, percent_sure=percent_sure,
+                     completed=True, isRecyclable=False)
+                elif is_recyclable(correct_results):
                     recyclable = "Please recycle your object."
                     flash("Success! Press \"See results\" to see our analysis of your item.")
                     return render_template("index.html", recyclable=recyclable, percent_sure=percent_sure,
                      completed=True, isRecyclable=True)
+                elif tech_is_recyclable(correct_results):
+                    recyclable = "Your object can be recycled at any technology recycling place, or your nearest apple store for free."
+                    flash("Success! Press \"See results\" to see our analysis of your item.")
+                    return render_template("index.html", recyclable=recyclable, percent_sure=percent_sure,
+                     completed=True, isRecyclable=False)
                 else:
                     flash("Success! Press \"See results\" to see our analysis of your item.")
                     recyclable = "Your object is not recyclable."
