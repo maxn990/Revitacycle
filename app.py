@@ -7,7 +7,7 @@ from clarifai.rest import Image as ClImage
 app = Flask(__name__)
 
 upload_folder = "static/uploads"
-allowed_extentions = set(['png', 'jpeg', 'jpg', 'gif', 'pdf'])
+allowed_extentions = set(['png', 'jpeg', 'jpg'])
 
 app.config['UPLOAD_FOLDER'] = upload_folder
 app.config['SECRET_KEY'] = 'fjhasldkfjhasdflkhasdflkjh'
@@ -15,10 +15,15 @@ app.config['SECRET_KEY'] = 'fjhasldkfjhasdflkhasdflkjh'
 mlApp = ClarifaiApp(api_key='86481bac6d0847dba50601141a7dba8d')
 model = mlApp.public_models.general_model
 
-recyclable_objects = ["bottle", "cardboard", "glass", "plastic bottles", "plastic containers", "cereal boxes",
-                     "snack boxes", "phonebooks", "magazines", "mail", "paper", "newspaper", "tin cans",
-                      "aluminum cans", "steel cans", "food containers", "jars", "soft drink bottles", "beer bottles",
-                       "wine bottles", "liquor bottles"]
+recyclable_objects = ["bottle", "metal bottle", "cardboard", "glass", "plastic bottle", "plastic container", "cereal box",
+                     "snack box", "phonebook", "magazine", "mail", "paper", "newspaper", "tin cans",
+                      "aluminum can", "steel can", "food container", "jar", "soft drink bottle", "beer bottle",
+                       "wine bottle", "liquor bottle", "carton", "aersol", "aersol can", "aluminum", "aluminum foil",
+                       "aluminum tray", "stryrofoam", "stryrofoam packaging", "stryrofoam food container",
+                        "stryrofoam drink container", "paper box", "pizza box", "paper bag", "shredded paper",
+                        "plastic bucket", "plastic tubs", "plastic pot", "plastic tray", "plastic toy",
+                         "plastic food container", "plastic cup", "metal can", "aluminum can", "wrapping paper",
+                         "mail", "newspaper", "book"]
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -64,10 +69,12 @@ def index():
                      completed=True, isRecyclable=True)
                 else:
                     flash("Success! Press \"See results\" to see our analysis of your item.")
-                    recyclable = "Your object can be thrown away."
+                    recyclable = "Your object is not recyclable."
                     percent_sure = ""
                     return render_template("index.html", percent_sure=percent_sure,
                      recyclable=recyclable, completed=True, isRecyclable=False)
+            else:
+                flash("File type not supported. Please upload a png, jpg or a jpeg.")
         except:
             flash("Please try a different file.")
     return render_template("index.html", recyclable="", percent_sure="", completed=False, isRecyclable=False)
