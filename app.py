@@ -97,7 +97,7 @@ def index():
                     return render_template("index.html", recyclable=recyclable, percent_sure=percent_sure,
                      completed=True, isRecyclable=True)
                 elif tech_is_recyclable(correct_results):
-                    recyclable = "Your object can be recycled at any technology recycling place, or your nearest apple store for free."
+                    recyclable = "Your object can be recycled at any technology recycling place, or your nearest Apple Store for free."
                     flash("Success! Press \"See results\" to see our analysis of your item.")
                     return render_template("index.html", recyclable=recyclable, percent_sure=percent_sure,
                      completed=True, isRecyclable=False)
