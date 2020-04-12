@@ -33,36 +33,44 @@ def is_recyclable(detected_objects):
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    completed = False
     if request.method == 'POST':
-        if 'file' not in request.files:
-            flash('No file part')
-            return redirect(request.url)
-        file = request.files['file']
-        if file.filename == '':
-            flash('No selected file')
-            return redirect(request.url)
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            position = upload_folder + "/" + filename
-            img = ClImage(filename=position)
-            response = model.predict([img])
-            results = response["outputs"][0]["data"]["concepts"]
-            correct_results = []
-            for i in results:
-                name = i["name"]
-                value = round((i["value"]) * 100)
-                if (value > 95):
-                    correct_results.append(name)
-            percent_sure = "We are " + str(response["outputs"][0]["data"]["concepts"][0]["value"]*100) + "% sure!"
-            if is_recyclable(correct_results):
-                recyclable = "Please recycle your object."
-                return render_template("index.html", recyclable=recyclable, percent_sure=percent_sure, completed=True)
-            else:
-                recyclable = "Please do not through your object away."
-                percent_sure = ""
-                return render_template("index.html", percent_sure=percent_sure, recyclable=recyclable, completed=True)
-    return render_template("index.html", recyclable="", percent_sure="", completed=False)
+        try:
+            if 'file' not in request.files:
+                flash('No file part')
+                return redirect(request.url)
+            file = request.files['file']
+            if file.filename == '':
+                flash('Please select a file.')
+                return redirect(request.url)
+            if file and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                position = upload_folder + "/" + filename
+                img = ClImage(filename=position)
+                response = model.predict([img])
+                results = response["outputs"][0]["data"]["concepts"]
+                correct_results = []
+                for i in results:
+                    name = i["name"]
+                    value = round((i["value"]) * 100)
+                    if (value > 95):
+                        correct_results.append(name)
+                percent_sure = "We are " + str(response["outputs"][0]["data"]["concepts"][0]["value"]*100) + "% sure that your object is recyclable!"
+                if is_recyclable(correct_results):
+                    recyclable = "Please recycle your object."
+                    flash("Success! Press \"See results\" to see our analysis of your item.")
+                    return render_template("index.html", recyclable=recyclable, percent_sure=percent_sure,
+                     completed=True, isRecyclable=True)
+                else:
+                    flash("Success! Press \"See results\" to see our analysis of your item.")
+                    recyclable = "Your object can be thrown away."
+                    percent_sure = ""
+                    return render_template("index.html", percent_sure=percent_sure,
+                     recyclable=recyclable, completed=True, isRecyclable=False)
+        except:
+            flash("Please try a different file.")
+    return render_template("index.html", recyclable="", percent_sure="", completed=False, isRecyclable=False)
 
 @app.route('/our-team')
 def our_team():
