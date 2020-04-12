@@ -12,7 +12,7 @@
     <!-- ### NAV BAR ### -->
     <!-- ############### -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <img src="http://localhost:3000/images/logo.png" width="30" height="30" alt="logo">
+      <img src="static/images/logo.png" width="30" height="30" alt="logo">
       <a class="navbar-brand" href="/">REVITACYCLE</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -21,10 +21,10 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item">
-            <a class="nav-link" href="http://localhost:3000/about-recycling">About Recycling</a>
+            <a class="nav-link" href="/about-recycling">About Recycling</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="http://localhost:3000/our-team">Meet Our Team</a>
+            <a class="nav-link" href="/our-team">Meet Our Team</a>
           </li>
         </ul>
       </div>
@@ -39,7 +39,7 @@
           <!-- ### LOGO ### -->
           <!-- ############ -->
           <!-- style="width: 40%; height: 40%;" -->
-          <img src="http://localhost:3000/images/logo.png" alt="logo" style="width: 80%; height: 80%;">
+          <img src="static/images/logo.png" alt="logo" style="width: 80%; height: 80%;">
         </div>
         <div class="col">
           <div class="row">
@@ -50,12 +50,14 @@
               <!-- ### IMAGE VERSION ### -->
               <!-- ##################### -->
               <form action="/" enctype="multipart/form-data" method="POST">
-                <button class="btn btn-primary"><input type="file" name="photo" /></button>
-                <button class="btn btn-primary"><input type="submit" value="Upload Photo"/></button>
+                <button class="btn btn-primary"><input type=file name=file /></button>
+                <button class="btn btn-primary"><input type=submit value=Upload></button>
               </form>
+              {% if completed %}
+              <button class="btn btn-outline-success" type="button" data-toggle="modal" data-target="#results">See results</button>
+              {% endif %}
             </div>
           </div>
-          <button type="button" data-toggle="modal" data-target="#results">Toggle modal</button>
           <!-- ############ -->
           <!-- ### TEXT ###-->
           <!-- ############ -->
@@ -84,13 +86,13 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="resultsLabelTitle">Recyclable</h5>
+            <h5 class="modal-title" id="resultsLabelTitle">{{recyclable}}</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">
-            <p>We are 95% sure</p>
+            <p>{{percent_sure}}</p>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
