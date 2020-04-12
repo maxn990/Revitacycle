@@ -27,10 +27,10 @@ recyclable_objects = ["bottle", "cardboard", "glass", "plastic bottle", "plastic
 
 tech_objects = ["computer", "phone", "watch", "laptop", "eletronics", "tablet", 'iPad', 'iPhone', 'apple watch',
                 'pc', 'personal computer', 'mac', 'ram', 'ram card', 'processor', 'mother board', 'screen',
-                'display', 'monitor', 'calculator', 'speaker', 'kindle', 'periferal', 'key board', 'mouse', 'mice']
+                'display', 'monitor', 'calculator', 'speaker', 'kindle', 'key board', 'mouse', 'mice']
 
-not_recycleable = ['paper plate', 'paper towel', 'paper napkin', 'plate', 'towel', 'napkin', 'metal bottle', 'plastic rap', 'food',
-                    'ceramic', 'packing peanut', 'light bulb', 'photo', 'photograph', 'wood', 'egg carton', 'metal water bottle',
+not_recycleable = ['plate', 'towel', 'napkin', 'metal bottle', 'plastic rap', 'food',
+                    'ceramic', 'packing peanut', 'light bulb', 'photograph', 'wood', 'egg carton', 'metal water bottle',
                     'plastic wrap', 'egg carton', 'bulb']
 
 def allowed_file(filename):
@@ -86,18 +86,18 @@ def index():
                         correct_results.append(name)
                 percent_sure = "We are " + str(response["outputs"][0]["data"]["concepts"][0]["value"]*100) + "% sure that your object is recyclable!"
                 os.remove(position)
-                if is_not_recyclable(correct_results):
-                    recyclable = "Contrary to popular belief, your object is not recyclable."
-                    flash("Success! Press \"See results\" to see our analysis of your item.")
-                    return render_template("index.html", recyclable=recyclable, percent_sure=percent_sure,
-                     completed=True, isRecyclable=False)
-                elif is_recyclable(correct_results):
+                if is_recyclable(correct_results):
                     recyclable = "Please recycle your object."
                     flash("Success! Press \"See results\" to see our analysis of your item.")
                     return render_template("index.html", recyclable=recyclable, percent_sure=percent_sure,
                      completed=True, isRecyclable=True)
+                elif is_not_recyclable(correct_results):
+                    recyclable = "Contrary to popular belief, your object is not recyclable."
+                    flash("Success! Press \"See results\" to see our analysis of your item.")
+                    return render_template("index.html", recyclable=recyclable, percent_sure=percent_sure,
+                     completed=True, isRecyclable=False)
                 elif tech_is_recyclable(correct_results):
-                    recyclable = "Your object can be recycled at any technology recycling place, or your nearest apple store for free."
+                    recyclable = "Your object can be recycled at any technology recycling place, or your nearest Apple Store for free."
                     flash("Success! Press \"See results\" to see our analysis of your item.")
                     return render_template("index.html", recyclable=recyclable, percent_sure=percent_sure,
                      completed=True, isRecyclable=False)
