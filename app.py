@@ -27,7 +27,7 @@ recyclable_objects = ["bottle", "cardboard", "glass", "plastic bottle", "plastic
 
 tech_objects = ["computer", "phone", "watch", "laptop", "eletronics", "tablet", 'iPad', 'iPhone', 'apple watch',
                 'pc', 'personal computer', 'mac', 'ram', 'ram card', 'processor', 'mother board', 'screen',
-                'display', 'monitor', 'calculator', 'speaker', 'kindle', 'periferal', 'key board', 'mouse', 'mice']
+                'display', 'monitor', 'calculator', 'speaker', 'kindle', 'key board', 'mouse', 'mice']
 
 not_recycleable = ['plate', 'towel', 'napkin', 'metal bottle', 'plastic rap', 'food',
                     'ceramic', 'packing peanut', 'light bulb', 'photograph', 'wood', 'egg carton', 'metal water bottle',
