@@ -29,7 +29,7 @@ tech_objects = ["computer", "phone", "watch", "laptop", "eletronics", "tablet", 
                 'pc', 'personal computer', 'mac', 'ram', 'ram card', 'processor', 'mother board', 'screen',
                 'display', 'monitor', 'calculator', 'speaker', 'kindle', 'periferal', 'key board', 'mouse', 'mice']
 
-not_recycleable = ['paper plate', 'paper towel', 'paper napkin', 'plate', 'towel', 'napkin', 'metal bottle', 'plastic rap', 'food',
+not_recycleable = ['plate', 'towel', 'napkin', 'metal bottle', 'plastic rap', 'food',
                     'ceramic', 'packing peanut', 'light bulb', 'photo', 'photograph', 'wood', 'egg carton', 'metal water bottle',
                     'plastic wrap', 'egg carton', 'bulb']
 
