@@ -30,7 +30,8 @@ tech_objects = ["computer", "phone", "watch", "laptop", "desktop", "tablet", 'iP
                 'display', 'monitor', 'calculator', 'speaker', 'kindle', 'periferal', 'key board', 'mouse', 'mice']
 
 not_recycleable = ['paper plate', 'paper towel', 'paper napkin', 'plate', 'towel', 'napkin', 'metal bottle', 'plastic rap', 'food',
-                    'ceramics', 'packing peanut', 'light bulb', 'photo', 'photograph', 'wood', 'egg carton', 'metal water bottle']
+                    'ceramic', 'packing peanut', 'light bulb', 'photo', 'photograph', 'wood', 'egg carton', 'metal water bottle',
+                    'plastic wrap', 'egg carton', 'bulb']
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -54,6 +55,7 @@ def is_not_recyclable(detected_objects):
     for o in detected_objects:
         for r in not_recycleable:
             if r in o:
+                correct_results = o
                 return True
     return False
 
@@ -80,7 +82,7 @@ def index():
                 for i in results:
                     name = i["name"]
                     value = round((i["value"]) * 100)
-                    if (value > 95):
+                    if (value > 85):
                         correct_results.append(name)
                 percent_sure = "We are " + str(response["outputs"][0]["data"]["concepts"][0]["value"]*100) + "% sure that your object is recyclable!"
                 os.remove(position)
