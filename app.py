@@ -62,6 +62,7 @@ def index():
                     if (value > 95):
                         correct_results.append(name)
                 percent_sure = "We are " + str(response["outputs"][0]["data"]["concepts"][0]["value"]*100) + "% sure that your object is recyclable!"
+                os.remove(position)
                 if is_recyclable(correct_results):
                     recyclable = "Please recycle your object."
                     flash("Success! Press \"See results\" to see our analysis of your item.")
