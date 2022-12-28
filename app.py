@@ -7,7 +7,7 @@ from clarifai_grpc.channel.clarifai_channel import ClarifaiChannel
 from clarifai_grpc.grpc.api import service_pb2_grpc
 
 stub = service_pb2_grpc.V2Stub(ClarifaiChannel.get_grpc_channel())
-metadata = (('authorization', 'Key 24f6926e2f1744aa8e83199cb554d8b0'),)
+metadata = (('authorization', 'Key e42f62c3447d4c87b110cf39f27eca9f'),)
 
 app = Flask(__name__)
 
